@@ -1,5 +1,4 @@
-import intlTelInput from 'intl-tel-input';
-import 'intl-tel-input/build/css/intlTelInput.css'; // Если нужны стили
+import intlTelInput from 'intl-tel-input/intlTelInputWithUtil'
 import 'intl-tel-input/styles'
 import './style.css'
 
