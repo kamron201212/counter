@@ -1,3 +1,14 @@
+:root,
+.iti {
+  --iti-dropdown-bg: #1e1b4b; /* старые версии */
+  --iti-country-selector-bg: #1e1b4b; /* v29+ */
+  --iti-hover-color: rgba(139, 92, 246, 0.35);
+  --iti-border-color: rgba(255, 255, 255, 0.2);
+  --iti-dialcode-color: rgba(255, 255, 255, 0.55);
+  --iti-arrow-color: #ffffff;
+  --iti-icon-color: #ffffff;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -6,24 +17,237 @@
 
 body {
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   font-family: "Segoe UI", system-ui, sans-serif;
   color: #fff;
   background: linear-gradient(135deg, #0f172a, #312e81);
 }
 
-.counter {
+.app {
+  min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 40px;
-  padding: 40px 56px;
+  justify-content: center;
+  gap: 28px;
+  padding: 24px;
+}
+
+.card {
   border-radius: 28px;
   background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(12px);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+/* ===== Карточка телефона ===== */
+.phone-card {
+  position: relative;
+  z-index: 10; /* список стран поверх счётчика */
+  width: 100%;
+  max-width: 460px;
+  padding: 28px 32px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.status {
+  margin-top: 12px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.status.ok {
+  color: #4ade80;
+}
+
+.status.error {
+  color: #f87171;
+}
+
+/* ===== Кнопка страны + инпут (с отступом между ними) ===== */
+.iti {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.iti__country-container {
+  position: relative !important;
+  top: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  padding: 0 !important;
+}
+
+.iti__selected-country {
+  height: 52px;
+  padding: 0 14px !important;
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.iti__selected-country:hover,
+.iti__selected-country:focus-visible {
+  background: rgba(255, 255, 255, 0.14) !important;
+  border-color: #8b5cf6;
+  outline: none;
+}
+
+.iti__selected-country-primary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+.iti__arrow {
+  margin-left: 0 !important;
+  border-top-color: #fff !important;
+}
+
+.iti__arrow--up {
+  border-bottom-color: #fff !important;
+}
+
+#phone {
+  flex: 1;
+  width: auto;
+  min-width: 0;
+  height: 52px;
+  padding: 0 16px !important;
+  font-size: 18px;
+  letter-spacing: 0.5px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 14px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+#phone::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+#phone:focus {
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.25);
+}
+
+#phone.valid {
+  border-color: #22c55e;
+}
+
+#phone.invalid {
+  border-color: #ef4444;
+}
+
+/* ===== Выпадающий список стран (тёмный) ===== */
+/* .iti__country-selector — v29+, .iti__dropdown-content — старые версии */
+.iti__country-selector,
+.iti__dropdown-content {
+  top: calc(100% + 10px) !important;
+  left: 0 !important;
+  margin: 0 !important;
+  width: 340px;
+  max-width: calc(100vw - 48px);
+  overflow: hidden;
+  color: #fff !important;
+  background: #1e1b4b !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 18px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+}
+
+.iti__search-input {
+  width: 100%;
+  font-size: 15px;
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: none !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: 0 !important;
+  outline: none;
+}
+
+.iti__search-input::placeholder {
+  color: rgba(255, 255, 255, 0.45);
+
+}
+
+.iti__country-list {
+  max-height: 280px;
+  padding: 8px;
+  overflow-y: auto;
+  color: #fff !important;
+  background: transparent !important;
+  border: none !important;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(139, 92, 246, 0.6) transparent;
+}
+
+.iti__country-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.iti__country-list::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.6);
+  border-radius: 6px;
+}
+
+.iti__country {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px !important;
+  color: #fff !important;
+  background: transparent;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.iti__country:hover,
+.iti__country.iti__highlight {
+  background: rgba(139, 92, 246, 0.35) !important;
+}
+
+.iti__country-name {
+  flex: 1;
+  margin: 0 !important;
+  font-size: 15px;
+  color: #fff !important;
+}
+
+.iti__dial-code {
+  margin: 0 !important;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.iti__divider {
+  margin: 6px 0;
+  border-bottom-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* ===== Счётчик ===== */
+.counter {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  padding: 40px 56px;
 }
 
 .value {
@@ -50,7 +274,7 @@ body {
   cursor: pointer;
   background: linear-gradient(135deg, #6366f1, #8b5cf6);
   box-shadow: 0 8px 20px rgba(99, 102, 241, 0.5);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
 }
 
 .btn:hover {
@@ -67,4 +291,18 @@ body {
   cursor: not-allowed;
   box-shadow: none;
   transform: none;
+}
+
+@media (max-width: 480px) {
+  .phone-card {
+    padding: 24px 20px;
+  }
+  .counter {
+    gap: 20px;
+    padding: 28px 24px;
+  }
+  .value {
+    min-width: 80px;
+    font-size: 56px;
+  }
 }

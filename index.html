@@ -1,18 +1,21 @@
-<!Doctype html>
+<!doctype html>
 <html lang="ru">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Counter</title>
+  <title>Counter + Phone</title>
 </head>
 
 <body>
-  <div class="counter">
-    <button class="btn" id="minus" aria-label="Уменьшить">−</button>
-    <span class="value" id="value"></span>
-    <button class="btn" id="plus" aria-label="Увеличить">+</button>
-  </div>
+  <main class="app">
+    <section class="card phone-card">
+      <h2 class="title">Номер телефона</h2>
+      <input id="phone" type="tel" placeholder="Введите номер" autocomplete="tel" />
+      <p class="status" id="phone-status">Выбери страну и введи номер</p>
+    </section>
+  </main>
+
   <script type="module" src="/src/main.js"></script>
 </body>
 
