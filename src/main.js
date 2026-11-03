@@ -1,6 +1,7 @@
-import intlTelInput from 'intl-tel-input/intlTelInputWithUtil'
-import 'intl-tel-input/styles'
-import './style.css'
+import intlTelInput from 'intl-tel-input';
+import 'intl-tel-input/styles'; // Стили самой библиотеки
+import './style.css';          // Ваши собственные стили
+
 
 /* ========== ТЕЛЕФОН ========== */
 
