@@ -4,3 +4,6 @@
       <span class="value" id="value">0</span>
       <button class="btn" id="plus" aria-label="Увеличить">+</button>
 </section>
+
+import intlTelInput from 'intl-tel-input';
+import 'intl-tel-input/build/css/intlTelInput.css'; 

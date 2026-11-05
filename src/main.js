@@ -1,6 +1,3 @@
-import intlTelInput from 'intl-tel-input';
-import 'intl-tel-input/build/css/intlTelInput.css'; 
-
 import './style.css';          // Ваши собственные стили
 
 
