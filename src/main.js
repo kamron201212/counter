@@ -1,5 +1,13 @@
-import intlTelInput from 'intl-tel-input';
-import 'intl-tel-input/build/css/intlTelInput.css';
+const input = document.querySelector("#phone");
+
+// Инициализация работает напрямую через глобальный скрипт из index.html
+if (input) {
+  window.intlTelInput(input, {
+    initialCountry: "uz", // сразу ставим Узбекистан по умолчанию, чтобы не мучиться с автоопределением
+    strictMode: true
+  });
+}
+
 
 const MAX_DIGITS = {
   uz: 9,
