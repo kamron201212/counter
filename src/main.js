@@ -1,12 +1,21 @@
+// Импортируем скрипт по прямому пути из установленной папки node_modules
+import intlTelInput from '../node_modules/intl-tel-input/build/js/intlTelInput.js';
+
+// Импортируем стили флагов по прямому пути
+import '../node_modules/intl-tel-input/build/css/intlTelInput.css';
+
+// Ваши стили сайта
+import './style.css';
+
 const input = document.querySelector("#phone");
 
-// Инициализация работает напрямую через глобальный скрипт из index.html
 if (input) {
-  window.intlTelInput(input, {
-    initialCountry: "uz", // сразу ставим Узбекистан по умолчанию, чтобы не мучиться с автоопределением
+  intlTelInput(input, {
+    initialCountry: "uz", // Ставим Узбекистан по умолчанию
     strictMode: true
   });
 }
+
 
 
 const MAX_DIGITS = {
