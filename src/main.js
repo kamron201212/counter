@@ -1,22 +1,6 @@
-// Импортируем скрипт по прямому пути из установленной папки node_modules
-import intlTelInput from '../node_modules/intl-tel-input/build/js/intlTelInput.js';
-
-// Импортируем стили флагов по прямому пути
-import '../node_modules/intl-tel-input/build/css/intlTelInput.css';
-
-// Ваши стили сайта
-import './style.css';
-
-const input = document.querySelector("#phone");
-
-if (input) {
-  intlTelInput(input, {
-    initialCountry: "uz", // Ставим Узбекистан по умолчанию
-    strictMode: true
-  });
-}
-
-
+import intlTelInput from 'intl-tel-input'
+import 'intl-tel-input/styles'
+import './style.css'
 
 const MAX_DIGITS = {
   uz: 9,
@@ -40,102 +24,56 @@ const MAX_DIGITS = {
 }
 
 const phoneInput = document.getElementById('phone')
-const phoneStatus = document.getElementById('phone-status')
-
 
 const iti = intlTelInput(phoneInput, {
   initialCountry: 'uz',
   countrySearch: true,
-  strictMode: true,
-  autoInsertDialCode: true,
-  countrySelectorMode: 'DROPDOWN', // v29+
-  numberDisplayFormat: 'INTERNATIONAL', // v29+
-  nationalMode: false, // для старых версий
+  separateDialCode: true, // код страны рядом с флагом, в инпуте только номер
+  nationalMode: true,
+  formatAsYouType: false, // библиотека не трогает пробелы, которые ты вводишь
+  loadUtils: () => import('intl-tel-input/utils'),
 })
 
 // работает и в новых, и в старых версиях библиотеки
 function getCountry() {
-  return typeof iti.getSelectedCountry === 'function'
-    ? iti.getSelectedCountry()
-    : iti.getSelectedCountryData()
+  const data =
+    typeof iti.getSelectedCountry === 'function'
+      ? iti.getSelectedCountry()
+      : iti.getSelectedCountryData()
+  return data || { iso2: '', dialCode: '' }
 }
+
+let currentIso = getCountry().iso2
 
 function limitDigits() {
-  const { iso2, dialCode } = getCountry()
-  const max = MAX_DIGITS[iso2]
-  if (!max) return
+  const max = MAX_DIGITS[getCountry().iso2]
 
-  const codeLength = String(dialCode).length
-  let value = phoneInput.value
+  // только цифры и пробелы
+  let value = phoneInput.value.replace(/[^\d\s]/g, '')
 
-  // обрезаем с конца, пока цифр после кода больше лимита
-  while (value.replace(/\D/g, '').length - codeLength > max) {
-    value = value.slice(0, -1)
-  }
-  phoneInput.value = value.trimEnd()
-}
-
-function checkPhone() {
-  const dial = '+' + getCountry().dialCode
-  const value = phoneInput.value.trim()
-
-  phoneInput.classList.remove('valid', 'invalid')
-
-  if (value === '' || value === dial) {
-    phoneStatus.textContent = 'Выбери страну и введи номер'
-    phoneStatus.className = 'status'
-    return
+  // режем лишние цифры, только если их стало больше лимита
+  if (max) {
+    while (value.replace(/\D/g, '').length > max) {
+      value = value.slice(0, -1)
+    }
+    if (value.replace(/\D/g, '').length === max) {
+      value = value.trimEnd()
+    }
   }
 
-  if (iti.isValidNumber()) {
-    phoneInput.classList.add('valid')
-    phoneStatus.textContent = '✓ Номер выглядит правильно'
-    phoneStatus.className = 'status ok'
-  } else {
-    phoneInput.classList.add('invalid')
-    phoneStatus.textContent = 'Проверь номер, он неполный или неверный'
-    phoneStatus.className = 'status error'
+  // меняем значение только если оно реально изменилось
+  if (value !== phoneInput.value) {
+    phoneInput.value = value
   }
 }
 
-phoneInput.addEventListener('input', () => {
-  limitDigits()
-  checkPhone()
-})
+phoneInput.addEventListener('input', limitDigits)
 
+// после выбора другой страны инпут пустой
 phoneInput.addEventListener('countrychange', () => {
-  // если инпут пустой — ставим код выбранной страны
-  if (phoneInput.value.trim() === '') {
-    phoneInput.value = '+' + getCountry().dialCode
-  }
-  limitDigits()
-  checkPhone()
-})
-
-/* ========== СЧЁТЧИК ========== */
-let count = 0
-
-const valueEl = document.getElementById('value')
-const plusBtn = document.getElementById('plus')
-const minusBtn = document.getElementById('minus')
-
-function render() {
-  valueEl.textContent = count
-  minusBtn.disabled = count === 0
-  valueEl.classList.add('bump')
-  setTimeout(() => valueEl.classList.remove('bump'), 150)
-}
-
-plusBtn.addEventListener('click', () => {
-  count++
-  render()
-})
-
-minusBtn.addEventListener('click', () => {
-  if (count > 0) {
-    count--
-    render()
+  const iso = getCountry().iso2
+  if (iso !== currentIso) {
+    currentIso = iso
+    phoneInput.value = ''
   }
 })
-
-render()

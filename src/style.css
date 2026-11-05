@@ -306,3 +306,33 @@ body {
     font-size: 56px;
   }
 }
+
+.phone-card,
+.iti,
+.iti input,
+#phone {
+  animation: none !important;
+}
+
+/* убираем любые анимации и сдвиги в списке стран */
+.iti *,
+.iti__dropdown-content,
+.iti__dropdown-content * {
+  animation: none !important;
+  transition: none !important;
+}
+
+.iti__country:hover,
+.iti__country.iti__highlight {
+  transform: none !important;
+  margin: 0 !important;
+}
+
+/* список не дёргает страницу при открытии и прокрутке */
+.iti__country-list {
+  overscroll-behavior: contain;
+}
+
+html {
+  scrollbar-gutter: stable;
+}
