@@ -28,6 +28,28 @@ const MAX_DIGITS = {
 const phoneInput = document.getElementById('phone')
 const phoneStatus = document.getElementById('phone-status')
 
+// Ждем, пока браузер загрузит все скрипты из index.html
+document.addEventListener("DOMContentLoaded", () => {
+  const input = document.querySelector("#phone");
+
+  if (input && window.intlTelInput) {
+    window.intlTelInput(input, {
+      initialCountry: "auto",
+      // Если используете автоопределение страны по IP, добавьте:
+      geoIpLookup: callback => {
+        fetch("https://ipapi.co")
+          .then(res => res.json())
+          .then(data => callback(data.country_code))
+          .catch(() => callback("us"));
+      },
+      utilsScript: "https://cloudflare.com" // нужно для масок
+    });
+  } else {
+    console.error("Библиотека intlTelInput не загрузилась из CDN");
+  }
+});
+
+
 const iti = intlTelInput(phoneInput, {
   initialCountry: 'uz',
   countrySearch: true,
